@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openldap
+  labels:
+    app: openldap
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openldap
+  namespace: openldap
+  labels:
+    app: openldap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openldap
+  template:
+    metadata:
+      labels:
+        app: openldap
+    spec:
+      containers:
+      - name: openldap
+        image: cleanstart/openldap:latest-dev
+        # Alternative: Use digest for immutable deployments
+        # image: cleanstart/openldap@sha256:31ee8afb85f119464a1a8fdc229f4a322c926ac8e87f25870b23516dce202be0
+        imagePullPolicy: IfNotPresent
+        # Entrypoint: slapd -u ldap -g ldap -h ldap:// ldaps:// -d 64
+        command:
+        - slapd
+        args:
+        - -u
+        - ldap
+        - -g
+        - ldap
+        - -h
+        - ldap:// ldaps://
+        - -d
+        - "64"
+        ports:
+        - name: ldap
+          containerPort: 389
+          protocol: TCP
+        - name: ldaps
+          containerPort: 636
+          protocol: TCP
+        env:
+        - name: PATH
+          value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+        - name: SSL_CERT_FILE
+          value: /etc/ssl/certs/ca-certificates.crt
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+        securityContext:
+          # allowPrivilegeEscalation must be true for NET_BIND_SERVICE to work when dropping ALL capabilities
+          allowPrivilegeEscalation: true
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE  # Required to bind to privileged ports 389 and 636
+            - SETGID             # Required for slapd to switch to 'ldap' group via -g ldap
+            - SETUID             # Required for slapd to switch to 'ldap' user via -u ldap
+          # Note: slapd switches to 'ldap' user internally via -u ldap -g ldap
+          # The container entrypoint handles user switching, so we don't set runAsNonRoot here
+          readOnlyRootFilesystem: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openldap
+  namespace: openldap
+  labels:
+    app: openldap
+spec:
+  type: ClusterIP
+  ports:
+  - port: 389
+    targetPort: 389
+    protocol: TCP
+    name: ldap
+  - port: 636
+    targetPort: 636
+    protocol: TCP
+    name: ldaps
+  selector:
+    app: openldap
+
