@@ -4,7 +4,7 @@ This container provides a production-ready OpenLDAP directory server that can be
 
 **📌 CleanStart Foundation:** Security-hardened, minimal base OS designed for enterprise containerized environments.
 
-**Image Path:** `cleanstart/openldap`
+**Image Path:** `ghcr.io/cleanstart-containers/openldap`
 
 **Registry:** CleanStart Registry
 
@@ -28,7 +28,7 @@ CleanStart images are built on secure, minimal base operating systems and optimi
 
 ## Container Image
 
-**Image:** `cleanstart/openldap:latest-dev`
+**Image:** `ghcr.io/cleanstart-containers/openldap:latest-dev`
 
 **Entrypoint:** `slapd -u ldap -g ldap -h ldap:// ldaps:// -d 64`
 
@@ -122,15 +122,15 @@ See the Kubernetes deployment guide for detailed TLS setup instructions.
 
 ### Pull Commands
 ```bash
-docker pull cleanstart/openldap:latest
-docker pull cleanstart/openldap:latest-dev
+docker pull ghcr.io/cleanstart-containers/openldap:latest
+docker pull ghcr.io/cleanstart-containers/openldap:latest-dev
 ```
 
 ### Run Commands
 
 Basic test:
 ```bash
-docker run -it --name openldap-test cleanstart/openldap:latest-dev
+docker run -it --name openldap-test ghcr.io/cleanstart-containers/openldap:latest-dev
 ```
 
 Production deployment:
@@ -139,7 +139,7 @@ docker run -d --name openldap-prod \
   --read-only \
   --security-opt=no-new-privileges \
   --user 1000:1000 \
-  cleanstart/openldap:latest
+  ghcr.io/cleanstart-containers/openldap:latest
 ```
 
 ---
@@ -153,8 +153,8 @@ CleanStart images support multiple architectures to ensure compatibility across 
 
 ### Architecture-based Pull Commands
 ```bash
-docker pull --platform linux/amd64 cleanstart/openldap:latest
-docker pull --platform linux/arm64 cleanstart/openldap:latest
+docker pull --platform linux/amd64 ghcr.io/cleanstart-containers/openldap:latest
+docker pull --platform linux/arm64 ghcr.io/cleanstart-containers/openldap:latest
 ```
 
 ---
