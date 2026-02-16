@@ -165,7 +165,7 @@ docker pull --platform linux/arm64 ghcr.io/cleanstart-containers/openldap:latest
 - **OpenLDAP Documentation:** https://www.openldap.org/
 - **Provenance / SBOM / Signature:** https://images.cleanstart.com/images/openldap
 - **Docker Hub:** https://hub.docker.com/r/cleanstart/openldap
-- **CleanStart All Images:** https://images.cleanstart.com
+- **CleanStart All Images:** https://images.cleanstart.com/images/openldap/details
 - **CleanStart Community Images:** https://hub.docker.com/u/cleanstart
 
 ---
