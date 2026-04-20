@@ -92,12 +92,12 @@ Essential links and resources for further information
  
 **CleanStart Images**: https://images.cleanstart.com/
  
-**Community Images**:
+**Community Images**:<br>
 **Docker Hub**: https://hub.docker.com/u/cleanstart<br>
 **GitHub**: https://github.com/cleanstart-containers<br>
 **AWS ECR Public Gallery**: https://gallery.ecr.aws/cleanstart/
  
-**Presence on Social Media**:
+**Presence on Social Media**:<br>
 **Community**: https://www.linkedin.com/groups/18324021/<br>
 **YouTube**: https://www.youtube.com/@CleanStartOfficial<br>
  
