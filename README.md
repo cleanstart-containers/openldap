@@ -4,37 +4,25 @@ The CleanStart Openldap image provides a production-ready, security-hardened con
 
 📌 **Base Foundation**: Production-ready container from cleanstart.
 
-**Image Path**: `public.ecr.aws/your-alias/openldap`
+**Image Path**: `ghcr.io/cleanstart-containers/openldap`
+
 **Registry**: cleanstart Registry
-
-## Key Features
-Core capabilities and strengths of this container
-
-
-
-## Common Use Cases
-Typical scenarios where this container excels
-
-
 
 ## Pull Latest Image
 Download the container image from the registry
 
 ```bash
-docker pull public.ecr.aws/your-alias/openldap:openldap
+docker pull ghcr.io/cleanstart-containers/openldap:latest
 ```
 ```bash
-docker pull public.ecr.aws/your-alias/openldap:container
-```
-```bash
-docker pull public.ecr.aws/your-alias/openldap:enterprise
+docker pull ghcr.io/cleanstart-containers/openldap:latest-dev
 ```
 
 ## Basic Run
 Run the container with basic configuration
 
 ```bash
-docker run -it --name openldap public.ecr.aws/your-alias/openldap:latest
+docker run -it --name openldap ghcr.io/cleanstart-containers/openldap:latest
 ```
 
 ## Production Deployment
@@ -45,33 +33,20 @@ docker run -d --name openldap-prod \
   --security-opt=no-new-privileges \
   --user 1000:1000 \
   --restart unless-stopped \
-  public.ecr.aws/your-alias/openldap:latest
+  ghcr.io/cleanstart-containers/openldap:latest
 ```
 
 Volume Mount Mount local directory for persistent data
 
 ```bash
-docker run -v /app:/app public.ecr.aws/your-alias/openldap:latest
+docker run -v /app:/app ghcr.io/cleanstart-containers/openldap:latest
 ```
 
 Port Forwarding Run with custom port mappings
 
 ```bash
-docker run -p 8080:8080 public.ecr.aws/your-alias/openldap:latest
+docker run -p 8080:8080 ghcr.io/cleanstart-containers/openldap:latest
 ```
-
-## Environment Variables
-Configuration options available through environment variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| ENV | production | Environment mode |
-| LOG_LEVEL | info | Logging level |
-
-## Security Best Practices
-Recommended security configurations and practices
-
-
 
 ## Kubernetes Security Context
 Recommended security context for Kubernetes deployments
@@ -89,16 +64,20 @@ securityContext:
 
 ## Documentation Resources
 Essential links and resources for further information
- 
-**CleanStart Images**: https://images.cleanstart.com/
- 
-**Community Images**:<br>
-**Docker Hub**: https://hub.docker.com/u/cleanstart<br>
-**GitHub**: https://github.com/cleanstart-containers<br>
-**AWS ECR Public Gallery**: https://gallery.ecr.aws/cleanstart/
- 
-**Presence on Social Media**:<br>
-**Community**: https://www.linkedin.com/groups/18324021/<br>
-**YouTube**: https://www.youtube.com/@CleanStartOfficial<br>
- 
-**Contribute to Container Use Cases**: https://github.com/cleanstart-dev/cleanstart-use-cases/
+
+- **Container Registry**: [https://www.cleanstart.com/](https://www.cleanstart.com/)
+- **CleanStart Community Images**: [https://hub.docker.com/u/cleanstart](https://hub.docker.com/u/cleanstart)
+- **How-to-Run CleanStart images & sample projects**: [https://github.com/orgs/cleanstart-containers/](https://github.com/orgs/cleanstart-containers/)
+  - How to run sample projects using Dockerfile
+  - How to deploy via Kubernetes YAML
+  - How to migrate from public images to CleanStart images
+
+---
+
+**Vulnerability Disclaimer**
+
+CleanStart offers Docker images that include third-party open-source libraries and packages maintained by independent contributors. While CleanStart maintains these images and applies industry-standard security practices, it cannot guarantee the security or integrity of upstream components beyond its control.
+
+Users acknowledge and agree that open-source software may contain undiscovered vulnerabilities or introduce new risks through updates. CleanStart shall not be liable for security issues originating from third-party libraries, including but not limited to zero-day exploits, supply chain attacks, or contributor-introduced risks.
+
+Security remains a shared responsibility: CleanStart provides updated images and guidance where possible, while users are responsible for evaluating deployments and implementing appropriate controls.
