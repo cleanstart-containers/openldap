@@ -29,23 +29,32 @@ docker run -it --name openldap ghcr.io/cleanstart-containers/openldap:latest
 Deploy with production security settings
 
 ```bash
+docker run --rm -v openldap-prod-data:/data alpine chown -R 1000:1000 /data && \
 docker run -d --name openldap-prod \
   --security-opt=no-new-privileges \
   --user 1000:1000 \
   --restart unless-stopped \
-  ghcr.io/cleanstart-containers/openldap:latest
+  -v openldap-prod-data:/var/lib/openldap/openldap-data \
+  -p 389:389 -p 636:636 \
+  --entrypoint slapd \
+  ghcr.io/cleanstart-containers/openldap:latest \
+  -h "ldap:// ldaps://" -d 0
 ```
 
 Volume Mount Mount local directory for persistent data
 
 ```bash
-docker run -v /app:/app ghcr.io/cleanstart-containers/openldap:latest
+docker run -it --name openldap \
+  -v openldap-data:/var/lib/openldap/openldap-data \
+  ghcr.io/cleanstart-containers/openldap:latest
 ```
 
 Port Forwarding Run with custom port mappings
 
 ```bash
-docker run -p 8080:8080 ghcr.io/cleanstart-containers/openldap:latest
+docker run -it --name openldap \
+  -p 1389:389 -p 1636:636 \
+  ghcr.io/cleanstart-containers/openldap:latest
 ```
 
 ## Kubernetes Security Context
