@@ -29,12 +29,18 @@ docker run -it --name openldap ghcr.io/cleanstart-containers/openldap:latest
 Deploy with production security settings
 
 ```bash
-docker run --rm -v openldap-prod-data:/data alpine chown -R 1000:1000 /data && \
+docker volume create openldap-prod-libdir
+
+docker run --rm -v openldap-prod-libdir:/mount alpine sh -c \
+  "mkdir -p /mount/openldap-data && chown -R 1000:1000 /mount && chmod -R 700 /mount" && \
 docker run -d --name openldap-prod \
   --security-opt=no-new-privileges \
   --user 1000:1000 \
+  --cap-drop ALL \
+  --cap-add NET_BIND_SERVICE \
   --restart unless-stopped \
-  -v openldap-prod-data:/var/lib/openldap/openldap-data \
+  -v openldap-prod-libdir:/var/lib/openldap \
+  -v ~/slapd.conf:/etc/openldap/slapd.conf:ro \
   -p 389:389 -p 636:636 \
   --entrypoint slapd \
   ghcr.io/cleanstart-containers/openldap:latest \
