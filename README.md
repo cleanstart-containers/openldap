@@ -67,7 +67,7 @@ docker run -d --name openldap-prod \
   -v ~/slapd.conf:/etc/openldap/slapd.conf:ro \
   -p 389:389 -p 636:636 \
   --entrypoint slapd \
-  cleanstart/openldap:latest \
+  ghcr.io/cleanstart-containers/openldap:latest \
   -h "ldap:// ldaps://" -d 0
 ```
 
