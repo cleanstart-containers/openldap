@@ -26,16 +26,40 @@ docker run -it --name openldap ghcr.io/cleanstart-containers/openldap:latest
 ```
 
 ## Production Deployment
-Deploy with production security settings
-
+Create slapd.conf for bind mount
 ```bash
-docker volume create openldap-prod-libdir
+create file - nano ~/slapd.conf
 
-docker run --rm -v openldap-prod-libdir:/mount alpine sh -c \
-  "mkdir -p /mount/openldap-data && chown -R 1000:1000 /mount && chmod -R 700 /mount" && \
+- paste below config -
+include         /etc/openldap/schema/core.schema
+include         /etc/openldap/schema/cosine.schema
+include         /etc/openldap/schema/inetorgperson.schema
+include         /etc/openldap/schema/nis.schema
+
+modulepath      /usr/lib/openldap
+moduleload      back_mdb.so
+
+database        config
+
+database        mdb
+maxsize         1073741824
+suffix          "dc=my-domain,dc=com"
+rootdn          "cn=Manager,dc=my-domain,dc=com"
+rootpw          {SSHA}yourhashedpasswordhere
+directory       /var/lib/openldap/openldap-data
+index           objectClass     eq
+
+database        monitor
+```
+### Production usage
+```bash
+docker rm -f openldap-prod 2>/dev/null; \
+docker volume create openldap-prod-libdir && \
+docker run --rm -v openldap-prod-libdir:/mount alpine sh -c "mkdir -p /mount/openldap-data && chown -R 389:389 /mount && chmod -R 700 /mount" && \
+chmod 644 ~/slapd.conf && \
 docker run -d --name openldap-prod \
   --security-opt=no-new-privileges \
-  --user 1000:1000 \
+  --user 389:389 \
   --cap-drop ALL \
   --cap-add NET_BIND_SERVICE \
   --restart unless-stopped \
@@ -43,9 +67,10 @@ docker run -d --name openldap-prod \
   -v ~/slapd.conf:/etc/openldap/slapd.conf:ro \
   -p 389:389 -p 636:636 \
   --entrypoint slapd \
-  ghcr.io/cleanstart-containers/openldap:latest \
+  cleanstart/openldap:latest \
   -h "ldap:// ldaps://" -d 0
 ```
+
 
 Volume Mount Mount local directory for persistent data
 
